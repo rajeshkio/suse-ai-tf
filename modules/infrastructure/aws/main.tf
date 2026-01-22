@@ -150,8 +150,8 @@ resource "aws_instance" "sle_micro_6" {
   provisioner "remote-exec" {
     inline = [
       "sudo transactional-update register -r ${var.registration_code}",
-      "sudo transactional-update --continue run bash -c 'zypper install -y curl && zypper install -y jq && zypper ar https://download.nvidia.com/suse/sle15sp6/ nvidia-sle15sp6-main && zypper --gpg-auto-import-keys refresh && zypper install -y --auto-agree-with-licenses nvidia-open-driver-G06-signed-kmp'",
-      "sudo transactional-update --continue run zypper install -y --auto-agree-with-licenses nvidia-compute-utils-G06=550.100",
+      "sudo transactional-update --continue run bash -c 'zypper install -y curl && zypper install -y jq && zypper ar https://developer.download.nvidia.com/compute/cuda/repos/x86_64/cuda-sles15.repo && zypper --gpg-auto-import-keys refresh && zypper install -y --auto-agree-with-licenses nvidia-open-driver-G06-signed-cuda-kmp-default'",
+      "sudo transactional-update --continue run zypper install -y --auto-agree-with-licenses nvidia-compute-utils-G06=575.57.08",
       "sudo transactional-update --continue run bash -c 'echo KUBECONFIG=/etc/rancher/rke2/rke2.yaml >> /etc/profile && echo PATH=$PATH:/var/lib/rancher/rke2/bin:/usr/local/nvidia/toolkit >> /etc/profile'",
       "sudo reboot"
     ]

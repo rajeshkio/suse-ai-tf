@@ -121,6 +121,7 @@ resource "helm_release" "ollama" {
   namespace        = var.suse_ai_namespace
   repository       = "oci://${var.registry_name}/charts"
   chart            = "ollama"
+  version          = "1.26.0"
   create_namespace = true
   timeout          = 900
   depends_on       = [helm_release.milvus, helm_release.nvidia_gpu_operator]
@@ -134,7 +135,7 @@ resource "helm_release" "open_webui" {
   namespace        = var.suse_ai_namespace
   repository       = "oci://${var.registry_name}/charts"
   chart            = "open-webui"
-  version          = "3.3.2"
+  version          = "7.2.0"
   create_namespace = true
   depends_on       = [helm_release.milvus, helm_release.ollama]
 

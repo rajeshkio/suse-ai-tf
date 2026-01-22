@@ -4,6 +4,7 @@ global:
 ingress:
   enabled: false
 defaultModel: "gemma:2b"
+runtimeClassName: nvidia
 ollama:
   models:
     pull:
@@ -16,6 +17,7 @@ ollama:
     enabled: true
     type: 'nvidia'
     number: 1
+    nvidiaResource: "nvidia.com/gpu"
 persistentVolume:
   enabled: true
   storageClass: local-path
