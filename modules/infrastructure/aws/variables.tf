@@ -1,41 +1,95 @@
-variable "instance_prefix" {
+variable "prefix" {
+  description = "Prefix for all resources to ensure uniqueness"
   type        = string
-  default     = null
-  description = "Prefix added to names of EC2 instance"
+  default     = "aws-tf"
 }
 
-variable "aws_region" {
+variable "region" {
+  description = "AWS region to deploy into"
   type        = string
-  description = "Specifies the AWS region to deploy all resources"
+  default     = "us-west-2"
+}
+
+variable "zone" {
+  description = "Availability zone for the instance and EBS volume"
+  type        = string
+  default     = "us-west-2a"
 }
 
 variable "instance_type" {
+  description = "Instance type for the VM (must support GPUs, e.g., g4dn.xlarge)"
   type        = string
   default     = "g4dn.xlarge"
-  description = "Type of EC2 instance"
 }
 
-variable "use_existing_ssh_public_key" {
+variable "os_disk_size" {
+  description = "Size of the root OS disk in GB"
+  type        = number
+  default     = 150
+}
+
+#variable "data_disk_count" {
+#  description = "Number of secondary data disks to attach"
+#  type        = number
+#  default     = 1
+#}
+
+#variable "data_disk_size" {
+#  description = "Size of the data disk in GB"
+#  type        = number
+#  default     = 100
+#}
+
+#variable "data_disk_type" {
+#  description = "EBS volume type for data disk"
+#  type        = string
+#  default     = "gp3"
+#}
+
+variable "create_ssh_key_pair" {
+  description = "Whether to generate a new SSH key pair"
   type        = bool
-  default     = false
-  description = "Boolean to check if using existing SSH key"
+  default     = true
 }
 
-variable "user_ssh_private_key" {
+variable "ssh_private_key_path" {
+  description = "Path to save/read the private key (null for default naming)"
   type        = string
   default     = null
-  description = "SSH Private key path"
 }
 
-variable "user_ssh_public_key" {
+variable "ssh_public_key_path" {
+  description = "Path to save/read the public key (null for default naming)"
   type        = string
   default     = null
-  description = "SSH Public key path"
 }
 
-variable "registration_code" {
+variable "existing_key_name" {
+  description = "Name of an existing AWS key pair if create_ssh_key_pair is false"
+  type        = string
+  default     = ""
+}
+
+variable "vpc_id" {
+  description = "Existing VPC ID (leave null if creating a new VPC)"
   type        = string
   default     = null
-  description = "SUSE registration code"
 }
 
+variable "subnet_id" {
+  description = "Existing Subnet ID (leave null if creating a new subnet)"
+  type        = string
+  default     = null
+}
+
+variable "ip_cidr_range" {
+  description = "The IP range for the subnet"
+  type        = string
+  default     = "10.0.1.0/24"
+}
+
+variable "rke2_version" {
+  description = "The version of RKE2 to install"
+  type        = string
+  default     = "v1.30.2+rke2r1"
+}
