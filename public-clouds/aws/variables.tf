@@ -1,86 +1,64 @@
-variable "instance_prefix" {
-  type        = string
-  default     = "suse-ai"
-  description = "Prefix added to names of EC2 instance"
+variable "prefix" {
+  type    = string
+  default = "aws-tf"
 }
 
-variable "aws_region" {
-  type        = string
-  description = "Specifies the AWS region to deploy all resources"
+variable "region" {
+  type    = string
+  default = "us-west-2"
+}
+
+variable "zone" {
+  type    = string
+  default = "us-west-2a"
 }
 
 variable "instance_type" {
-  type        = string
-  default     = "g4dn.xlarge"
-  description = "Type of EC2 instance"
+  type    = string
+  default = "g4dn.xlarge"
 }
 
-variable "use_existing_ssh_public_key" {
-  type        = bool
-  default     = false
-  description = "Boolean to check if using existing SSH key"
+variable "os_disk_size" {
+  type    = number
+  default = 150
 }
 
-variable "user_ssh_private_key" {
-  type        = string
-  default     = null
-  description = "SSH Private key path"
+variable "create_ssh_key_pair" {
+  type    = bool
+  default = true
 }
 
-variable "user_ssh_public_key" {
-  type        = string
-  default     = null
-  description = "SSH Public key path"
+variable "ssh_private_key_path" {
+  type    = string
+  default = null
 }
 
-variable "registration_code" {
-  type        = string
-  description = "SUSE registration code"
+variable "ssh_public_key_path" {
+  type    = string
+  default = null
 }
 
-variable "registry_name" {
-  type        = string
-  default     = "dp.apps.rancher.io"
-  description = "Name of the application collection registry"
+variable "existing_key_name" {
+  type    = string
+  default = ""
 }
 
-variable "registry_secretname" {
-  type        = string
-  default     = "application-collection"
-  description = "Name of the secret for accessing the registry"
+variable "vpc_id" {
+  type    = string
+  default = null
 }
 
-variable "registry_username" {
-  type        = string
-  description = "Username for the registry"
+variable "subnet_id" {
+  type    = string
+  default = null
 }
 
-variable "registry_password" {
-  type        = string
-  description = "Password/Token for the registry"
-  sensitive   = true
+variable "ip_cidr_range" {
+  type    = string
+  default = "10.0.1.0/24"
 }
 
-variable "kubeconfig_path" {
-  type        = string
-  description = "kubeconfig file for accessing cluster"
-  default     = null
-}
-
-variable "suse_ai_namespace" {
-  type        = string
-  default     = "suse-ai"
-  description = "Name of the namespace where you want to deploy SUSE AI Stack!"
-}
-
-variable "cert_manager_namespace" {
-  type        = string
-  default     = "cert-manager"
-  description = "Name of the namespace where you want to deploy cert-manager"
-}
-
-variable "gpu_operator_ns" {
-  type        = string
-  default     = "gpu-operator-resources"
-  description = "Namespace for the NVIDIA GPU operator"
+variable "rke2_version" {
+  type    = string
+  default = "v1.30.2+rke2r1"
 }
