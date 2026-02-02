@@ -1,0 +1,6 @@
+prefix       = "suse-ai-gcp"
+project_id   = "gcp-tf"
+rke2_version = "v1.32.10+rke2r1" # Check RKE2 releases at - https://github.com/rancher/rke2/releases
+region = "us-west2"
+zone   = "us-west2-b"
+

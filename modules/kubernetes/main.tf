@@ -1,5 +1,5 @@
 ## Add the namespace for deploying SUSE AI Stack:
-resource "kubernetes_namespace" "suse_ai_ns" {
+resource "kubernetes_namespace_v1" "suse_ai_ns" {
   depends_on = [null_resource.validate_kubernetes_connection]
   metadata {
     name = var.suse_ai_namespace
@@ -7,8 +7,8 @@ resource "kubernetes_namespace" "suse_ai_ns" {
 }
 
 ## Add the secret for accessing the application-collection registry:
-resource "kubernetes_secret" "suse-appco-registry" {
-  depends_on = [kubernetes_namespace.suse_ai_ns]
+resource "kubernetes_secret_v1" "suse-appco-registry" {
+  depends_on = [kubernetes_namespace_v1.suse_ai_ns]
   metadata {
     name      = var.registry_secretname
     namespace = var.suse_ai_namespace
@@ -48,19 +48,23 @@ resource "helm_release" "cert_manager" {
   namespace  = var.suse_ai_namespace
   repository = "oci://${var.registry_name}/charts"
   chart      = "cert-manager"
+  timeout    = 600
+  
+  repository_username = var.registry_username
+  repository_password = var.registry_password
 
   create_namespace = true
-  depends_on       = [kubernetes_secret.suse-appco-registry, helm_release.nvidia_gpu_operator]
+  depends_on       = [kubernetes_secret_v1.suse-appco-registry, null_resource.validate_kubernetes_connection, helm_release.nvidia_gpu_operator]
 
-  set {
+  set = [{
     name  = "crds.enabled"
     value = "true"
-  }
-
-  set {
-    name  = "global.imagePullSecrets[0].name"
-    value = kubernetes_secret.suse-appco-registry.metadata[0].name
-  }
+    },
+    {
+      name  = "global.imagePullSecrets[0].name"
+      value = kubernetes_secret_v1.suse-appco-registry.metadata[0].name
+    }
+  ]
 }
 
 ## Add label to node for GPU assignment:
@@ -74,14 +78,14 @@ resource "null_resource" "label_node" {
 
     connection {
       type        = "ssh"
-      user        = "ec2-user"
+      user        = var.ssh_username
       private_key = var.ssh_private_key_content
       host        = var.ec2_public_ip
     }
   }
 }
 
-# Patch RKE-Ingress controller to allow hostNetwork so we can access SUSE AI on public IP:
+# Patch RKE2-Ingress controller to allow hostNetwork so we can access SUSE AI on public IP:
 resource "null_resource" "patch_ingress_hostnetwork" {
   depends_on = [null_resource.label_node]
 
@@ -95,7 +99,7 @@ resource "null_resource" "patch_ingress_hostnetwork" {
 
     connection {
       type        = "ssh"
-      user        = "ec2-user"
+      user        = var.ssh_username
       private_key = var.ssh_private_key_content
       host        = var.ec2_public_ip
     }
@@ -110,7 +114,8 @@ resource "helm_release" "milvus" {
   chart            = "milvus"
   version          = "4.2.2"
   create_namespace = true
-  depends_on       = [kubernetes_secret.suse-appco-registry, helm_release.nvidia_gpu_operator]
+  timeout          = 600
+  depends_on       = [kubernetes_secret_v1.suse-appco-registry, null_resource.validate_kubernetes_connection, helm_release.cert_manager, helm_release.nvidia_gpu_operator]
 
   values = [file("${path.module}/milvus-overrides.yaml")]
 }
@@ -121,9 +126,10 @@ resource "helm_release" "ollama" {
   namespace        = var.suse_ai_namespace
   repository       = "oci://${var.registry_name}/charts"
   chart            = "ollama"
+  version          = "1.33.0"
   create_namespace = true
   timeout          = 900
-  depends_on       = [helm_release.milvus, helm_release.nvidia_gpu_operator]
+  depends_on       = [helm_release.milvus, null_resource.validate_kubernetes_connection, helm_release.nvidia_gpu_operator]
 
   values = [file("${path.module}/ollama-overrides.yaml")]
 }
@@ -134,8 +140,9 @@ resource "helm_release" "open_webui" {
   namespace        = var.suse_ai_namespace
   repository       = "oci://${var.registry_name}/charts"
   chart            = "open-webui"
-  version          = "3.3.2"
+  version          = "8.19.0"
   create_namespace = true
+  timeout          = 600
   depends_on       = [helm_release.milvus, helm_release.ollama]
 
   values = [file("${path.module}/openwebui-overrides.yaml")]

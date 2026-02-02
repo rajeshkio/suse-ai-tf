@@ -1,7 +1,5 @@
 driver:
  enabled: false
-nfd:
- enabled: true
 toolkit:
  env:
   - name: CONTAINERD_SOCKET

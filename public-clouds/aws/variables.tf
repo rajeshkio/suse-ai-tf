@@ -1,41 +1,72 @@
-variable "instance_prefix" {
-  type        = string
-  default     = "suse-ai"
-  description = "Prefix added to names of EC2 instance"
+variable "prefix" {
+  type    = string
+  default = "aws-tf"
 }
 
-variable "aws_region" {
-  type        = string
-  description = "Specifies the AWS region to deploy all resources"
+variable "region" {
+  type    = string
+  default = "us-west-2"
+}
+
+variable "zone" {
+  type    = string
+  default = "us-west-2a"
 }
 
 variable "instance_type" {
-  type        = string
-  default     = "g4dn.xlarge"
-  description = "Type of EC2 instance"
+  type    = string
+  default = "g4dn.xlarge"
 }
 
-variable "use_existing_ssh_public_key" {
-  type        = bool
-  default     = false
-  description = "Boolean to check if using existing SSH key"
+variable "os_disk_size" {
+  type    = number
+  default = 150
 }
 
-variable "user_ssh_private_key" {
+variable "ssh_username" {
+  description = "The default SSH user for the AMI"
   type        = string
-  default     = null
-  description = "SSH Private key path"
+  default     = "ec2-user" # Default for openSUSE/Amazon Linux on AWS
 }
 
-variable "user_ssh_public_key" {
-  type        = string
-  default     = null
-  description = "SSH Public key path"
+variable "create_ssh_key_pair" {
+  type    = bool
+  default = true
 }
 
-variable "registration_code" {
-  type        = string
-  description = "SUSE registration code"
+variable "ssh_private_key_path" {
+  type    = string
+  default = null
+}
+
+variable "ssh_public_key_path" {
+  type    = string
+  default = null
+}
+
+variable "existing_key_name" {
+  type    = string
+  default = ""
+}
+
+variable "vpc_id" {
+  type    = string
+  default = null
+}
+
+variable "subnet_id" {
+  type    = string
+  default = null
+}
+
+variable "ip_cidr_range" {
+  type    = string
+  default = "10.0.1.0/24"
+}
+
+variable "rke2_version" {
+  type    = string
+  default = "v1.30.2+rke2r1"
 }
 
 variable "registry_name" {
@@ -61,12 +92,6 @@ variable "registry_password" {
   sensitive   = true
 }
 
-variable "kubeconfig_path" {
-  type        = string
-  description = "kubeconfig file for accessing cluster"
-  default     = null
-}
-
 variable "suse_ai_namespace" {
   type        = string
   default     = "suse-ai"
@@ -81,6 +106,6 @@ variable "cert_manager_namespace" {
 
 variable "gpu_operator_ns" {
   type        = string
-  default     = "gpu-operator-resources"
   description = "Namespace for the NVIDIA GPU operator"
+  default     = "gpu-operator"
 }

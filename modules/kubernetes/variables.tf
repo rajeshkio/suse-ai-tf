@@ -13,6 +13,11 @@ variable "ec2_public_ip" {
   type        = string
 }
 
+variable "ssh_username" {
+  description = "SSH username for logging into the instance"
+  type        = string
+}
+
 variable "ssh_private_key_content" {
   description = "Content of the SSH private key"
   type        = string
@@ -63,4 +68,5 @@ variable "cert_manager_namespace" {
 variable "gpu_operator_ns" {
   type        = string
   description = "Namespace for the NVIDIA GPU operator"
+  default     = "gpu-operator"
 }
