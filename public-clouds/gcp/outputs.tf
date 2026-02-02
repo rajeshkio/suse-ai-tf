@@ -1,11 +1,11 @@
-output "external_ip" {
+output "instance_public_ip" {
   description = "The public IP of the GPU instance"
-  value       = module.infrastructure.external_ip
+  value       = module.infrastructure.instance_public_ip
 }
 
 output "ssh_command" {
   description = "Convenience command to login"
-  value       = "ssh -i ${local.private_ssh_key_path} ${local.ssh_username}@${module.infrastructure.external_ip}"
+  value       = "ssh -i ${local.private_ssh_key_path} ${local.ssh_username}@${module.infrastructure.instance_public_ip}"
 }
 
 output "kubeconfig_path" {
