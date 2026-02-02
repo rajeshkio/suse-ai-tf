@@ -73,7 +73,7 @@ variable "ssh_public_key_path" {
 }
 
 variable "ssh_username" {
-  description = "The default SSH user for instance"
+  description = "The default SSH user for the instance"
   type        = string
   default     = "opensuse" # Default for openSUSE/Amazon Linux on GCP
 }
@@ -182,4 +182,45 @@ variable "rke2_version" {
   description = "The version of RKE2 to install"
   type        = string
   default     = "null"
+}
+
+variable "registry_name" {
+  type        = string
+  default     = "dp.apps.rancher.io"
+  description = "Name of the application collection registry"
+}
+
+variable "registry_secretname" {
+  type        = string
+  default     = "application-collection"
+  description = "Name of the secret for accessing the registry"
+}
+
+variable "registry_username" {
+  type        = string
+  description = "Username for the registry"
+}
+
+variable "registry_password" {
+  type        = string
+  description = "Password/Token for the registry"
+  sensitive   = true
+}
+
+variable "suse_ai_namespace" {
+  type        = string
+  default     = "suse-ai"
+  description = "Name of the namespace where you want to deploy SUSE AI Stack!"
+}
+
+variable "cert_manager_namespace" {
+  type        = string
+  default     = "cert-manager"
+  description = "Name of the namespace where you want to deploy cert-manager"
+}
+
+variable "gpu_operator_ns" {
+  type        = string
+  description = "Namespace for the NVIDIA GPU operator"
+  default     = "gpu-operator"
 }

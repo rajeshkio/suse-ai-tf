@@ -138,7 +138,7 @@ resource "google_compute_instance" "default" {
   }
 }
 
-resource "null_resource" "wait_for_gpu_and_reboot" {
+resource "null_resource" "wait_for_gpu" {
   # This ensures the GPU driver and compute utils are installed correctly only starts after the VM is actually created
   depends_on = [google_compute_instance.default]
 
@@ -153,7 +153,7 @@ resource "null_resource" "wait_for_gpu_and_reboot" {
     }
 
     inline = [
-      "echo 'Waiting for GPU Driver installation and reboot to complete...'",
+      "echo 'Waiting for GPU Driver installation to complete...'",
       # This loop waits for nvidia-smi to be available in the PATH
       # timeout 600 ensures it doesn't loop forever (10 minutes max)
       "timeout 600 bash -c 'until command -v nvidia-smi &> /dev/null; do echo \"Still waiting for nvidia-smi...\"; sleep 20; done'",
@@ -165,7 +165,7 @@ resource "null_resource" "wait_for_gpu_and_reboot" {
 }
 
 resource "null_resource" "rke2_installation" {
-  depends_on = [null_resource.wait_for_gpu_and_reboot]
+  depends_on = [null_resource.wait_for_gpu]
 
   provisioner "remote-exec" {
     inline = [

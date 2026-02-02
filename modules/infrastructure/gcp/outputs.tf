@@ -11,3 +11,14 @@ output "ssh_command" {
 output "kubeconfig_path" {
   value = "${path.cwd}/kubeconfig-rke2.yaml"
 }
+
+output "ssh_private_key_content" {
+  description = "The content of the generated private key"
+  value = var.create_ssh_key_pair ? tls_private_key.ssh_private_key[0].private_key_openssh : file(local.private_ssh_key_path)
+  sensitive   = true
+}
+
+output "kubeconfig_done" {
+  value = null_resource.retrieve_kubeconfig.id
+}
+
