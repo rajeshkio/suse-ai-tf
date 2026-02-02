@@ -72,6 +72,12 @@ variable "ssh_public_key_path" {
   default     = null
 }
 
+variable "ssh_username" {
+  description = "The default SSH user for instance"
+  type        = string
+  default     = "opensuse" # Default for openSUSE/Amazon Linux on GCP
+}
+
 variable "ip_cidr_range" {
   description = "Specifies the range of private IPs available for the Google Subnet. Default is '10.10.0.0/24'."
   type        = string
