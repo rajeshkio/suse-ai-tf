@@ -8,8 +8,8 @@ variable "kubeconfig_ready_signal" {
   type        = string
 }
 
-variable "ec2_public_ip" {
-  description = "Public IP of the EC2 instance"
+variable "instance_public_ip" {
+  description = "Public IP of the instance"
   type        = string
 }
 

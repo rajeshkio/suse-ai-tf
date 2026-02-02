@@ -1,6 +1,6 @@
-output "ec2_public_ip" {
+output "instance_public_ip" {
   description = "The public IP of the openSUSE VM"
-  value       = module.infrastructure.ec2_public_ip
+  value       = module.infrastructure.instance_public_ip
 }
 
 output "kubeconfig_path" {
@@ -10,5 +10,5 @@ output "kubeconfig_path" {
 
 output "ssh_command" {
   description = "Command to connect to the VM"
-  value       = "ssh -i ${local.private_ssh_key_path} ${var.ssh_username}@${module.infrastructure.ec2_public_ip}"
+  value       = "ssh -i ${local.private_ssh_key_path} ${var.ssh_username}@${module.infrastructure.instance_public_ip}"
 }

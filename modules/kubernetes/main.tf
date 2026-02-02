@@ -80,7 +80,7 @@ resource "null_resource" "label_node" {
       type        = "ssh"
       user        = var.ssh_username
       private_key = var.ssh_private_key_content
-      host        = var.ec2_public_ip
+      host        = var.instance_public_ip
     }
   }
 }
@@ -101,7 +101,7 @@ resource "null_resource" "patch_ingress_hostnetwork" {
       type        = "ssh"
       user        = var.ssh_username
       private_key = var.ssh_private_key_content
-      host        = var.ec2_public_ip
+      host        = var.instance_public_ip
     }
   }
 }

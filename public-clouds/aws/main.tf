@@ -69,31 +69,13 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-  kubernetes =  {
+  kubernetes = {
     host                   = yamldecode(data.local_file.kubeconfig_raw.content).clusters[0].cluster.server
     client_certificate     = base64decode(yamldecode(data.local_file.kubeconfig_raw.content).users[0].user.client-certificate-data)
     client_key             = base64decode(yamldecode(data.local_file.kubeconfig_raw.content).users[0].user.client-key-data)
     cluster_ca_certificate = base64decode(yamldecode(data.local_file.kubeconfig_raw.content).clusters[0].cluster.certificate-authority-data)
   }
 }
-
-#provider "kubernetes" {
-#  config_path = fileexists(local.kc_path) ? local.kc_path : "/dev/null"
-#}
-
-#provider "helm" {
-#  kubernetes = {
-#    config_path = fileexists(local.kc_path) ? local.kc_path : "/dev/null"
-
-#    registries = [
-#      {
-#        url      = var.registry_name
-#        username = var.registry_username
-#        password = var.registry_password
-#      }
-#    ]
-#  }
-#}
 
 module "kubernetes" {
   source     = "../../modules/kubernetes"
@@ -104,7 +86,7 @@ module "kubernetes" {
     helm       = helm
   }
 
-  ec2_public_ip           = module.infrastructure.ec2_public_ip
+  instance_public_ip      = module.infrastructure.instance_public_ip
   ssh_private_key_content = module.infrastructure.ssh_private_key_content
   kubeconfig_path         = local.kc_path
   kubeconfig_ready_signal = module.infrastructure.kubeconfig_done

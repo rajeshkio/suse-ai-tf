@@ -88,7 +88,7 @@ module "kubernetes" {
     helm       = helm
   }
 
-  ec2_public_ip           = module.infrastructure.external_ip
+  instance_public_ip      = module.infrastructure.instance_public_ip
   ssh_private_key_content = module.infrastructure.ssh_private_key_content
   kubeconfig_path         = local.kc_path
   kubeconfig_ready_signal = module.infrastructure.kubeconfig_done
