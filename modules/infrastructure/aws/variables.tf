@@ -28,24 +28,6 @@ variable "os_disk_size" {
   default     = 150
 }
 
-#variable "data_disk_count" {
-#  description = "Number of secondary data disks to attach"
-#  type        = number
-#  default     = 1
-#}
-
-#variable "data_disk_size" {
-#  description = "Size of the data disk in GB"
-#  type        = number
-#  default     = 100
-#}
-
-#variable "data_disk_type" {
-#  description = "EBS volume type for data disk"
-#  type        = string
-#  default     = "gp3"
-#}
-
 variable "create_ssh_key_pair" {
   description = "Whether to generate a new SSH key pair"
   type        = bool
@@ -65,9 +47,8 @@ variable "ssh_public_key_path" {
 }
 
 variable "existing_key_name" {
-  description = "Name of an existing AWS key pair if create_ssh_key_pair is false"
-  type        = string
-  default     = ""
+  type    = string
+  default = null
 }
 
 variable "vpc_id" {

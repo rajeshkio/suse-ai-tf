@@ -23,6 +23,12 @@ variable "os_disk_size" {
   default = 150
 }
 
+variable "ssh_username" {
+  description = "The default SSH user for the AMI"
+  type        = string
+  default     = "ec2-user" # Default for openSUSE/Amazon Linux on AWS
+}
+
 variable "create_ssh_key_pair" {
   type    = bool
   default = true
@@ -61,4 +67,45 @@ variable "ip_cidr_range" {
 variable "rke2_version" {
   type    = string
   default = "v1.30.2+rke2r1"
+}
+
+variable "registry_name" {
+  type        = string
+  default     = "dp.apps.rancher.io"
+  description = "Name of the application collection registry"
+}
+
+variable "registry_secretname" {
+  type        = string
+  default     = "application-collection"
+  description = "Name of the secret for accessing the registry"
+}
+
+variable "registry_username" {
+  type        = string
+  description = "Username for the registry"
+}
+
+variable "registry_password" {
+  type        = string
+  description = "Password/Token for the registry"
+  sensitive   = true
+}
+
+variable "suse_ai_namespace" {
+  type        = string
+  default     = "suse-ai"
+  description = "Name of the namespace where you want to deploy SUSE AI Stack!"
+}
+
+variable "cert_manager_namespace" {
+  type        = string
+  default     = "cert-manager"
+  description = "Name of the namespace where you want to deploy cert-manager"
+}
+
+variable "gpu_operator_ns" {
+  type        = string
+  description = "Namespace for the NVIDIA GPU operator"
+  default     = "gpu-operator"
 }

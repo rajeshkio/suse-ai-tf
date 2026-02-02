@@ -165,7 +165,7 @@ resource "null_resource" "wait_for_gpu" {
     }
 
     inline = [
-      "echo 'Waiting for GPU Driver installation and reboot to complete...'",
+      "echo 'Waiting for GPU Driver installation to complete...'",
       # This loop waits for nvidia-smi to be available in the PATH
       # timeout 600 ensures it doesn't loop forever (10 minutes max)
       "timeout 600 bash -c 'until command -v nvidia-smi &> /dev/null; do echo \"Still waiting for nvidia-smi...\"; sleep 20; done'",

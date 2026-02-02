@@ -10,5 +10,5 @@ output "kubeconfig_path" {
 
 output "ssh_command" {
   description = "Command to connect to the VM"
-  value       = "ssh -i ${local.private_ssh_key_path} ${local.ssh_username}@${module.infrastructure.ec2_public_ip}"
+  value       = "ssh -i ${local.private_ssh_key_path} ${var.ssh_username}@${module.infrastructure.ec2_public_ip}"
 }
