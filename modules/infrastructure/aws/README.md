@@ -10,19 +10,7 @@ This module provisions a GPU-accelerated EC2 instance running **openSUSE Leap** 
 
 ## Usage
 
-```hcl
-module "aws_gpu_node" {
-  source        = "../../modules/infrastructure/aws"
-  
-  prefix        = "suse-ai-dev"
-  instance_type = "g4dn.xlarge"
-  vpc_id        = "vpc-12345"
-  subnet_id     = "subnet-12345"
-  
-}
-
-Prerequisites
-1. AWS CLI configured with valid credentials.
+## Prerequisites
 
 ```bash
 # Install AWS CLI and configure credentials
@@ -31,3 +19,16 @@ aws configure
 aws sts get-caller-identity
 ```
 
+## Usage
+
+```hcl
+module "aws_gpu_node" {
+  source        = "../../modules/infrastructure/aws"
+
+  prefix        = "suse-ai-dev"
+  instance_type = "g4dn.xlarge"
+  vpc_id        = "vpc-12345"
+  subnet_id     = "subnet-12345"
+
+}
+```
