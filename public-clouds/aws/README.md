@@ -1,7 +1,7 @@
 # Deployment of SUSE AI Stack on GPU powered instance on AWS
 
 ## Environment Prerequisites
-Before running Terraform, ensure you have the CLI tools configured for your target cloud.
+1. Before running Terraform, ensure you have the CLI tools configured for your target cloud.
 
 ```bash
 # Install AWS CLI and configure credentials
@@ -9,8 +9,25 @@ aws configure
 # Verify identity
 aws sts get-caller-identity
 ```
+2. ⚠️ Mandatory AWS Marketplace Subscription
+This project uses the official openSUSE Leap AMI. Because this is a Marketplace image, you must manually accept the terms **once** per AWS Account:
+
+1. Visit the [openSUSE Leap Marketplace Page](https://aws.amazon.com/marketplace/pp?sku=51luq5gebk3opt7gcvkdrrm89).
+2. Ensure you are logged into your target AWS Account.
+3. Click **View Purchase Options/Continue to Subscribe** and **Accept Terms**. 
 
 ## Running the Terraform Code
+
+1. Copy ./terraform.tfvars.example to ./terraform.tfvars
+2. Edit ./terraform.tfvars
+  - Update the required variables:
+    - `prefix` to give the resources an identifiable name (e.g., your initials or first name)
+    - `region` and `zone` to specify the Google region where resources will be created
+    - `registry_name` to specify the name of the registry where the SUSE AI stack helm charts are located.
+    - `registry_username` to specify the name of the registry username.
+    - `registry_password` to specify the password for the registry.
+    - `rke2_version` to specify the version of RKE2 cluster to be installed.
+3. Then execute the terraform commands:
 
 ```bash
 # Navigate to the AWS implementation
