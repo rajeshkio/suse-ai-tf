@@ -16,6 +16,9 @@ This project uses the official openSUSE Leap AMI. Because this is a Marketplace 
 2. Ensure you are logged into your target AWS Account.
 3. Click **View Purchase Options/Continue to Subscribe** and **Accept Terms**. 
 
+<img width="627" height="1047" alt="image" src="https://github.com/user-attachments/assets/c62ff437-1234-4b34-a956-02dc6a5656ad" />
+
+
 ## Running the Terraform Code
 
 1. Copy ./terraform.tfvars.example to ./terraform.tfvars
