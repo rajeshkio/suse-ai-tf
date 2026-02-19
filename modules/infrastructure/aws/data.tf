@@ -6,7 +6,7 @@ data "aws_ami" "opensuse_leap" {
   filter {
     name = "name"
     # Matches the specific version and architecture you provided
-    values = ["openSUSE-Leap-15-6-v*-hvm-ssd-x86_64-*"]
+    values = ["openSUSE-Leap-15*-*x86_64*"]
   }
 
   filter {
