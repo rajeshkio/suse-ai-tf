@@ -13,6 +13,10 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = ">= 2.16.0"
     }
+    rancher2 = {
+      source  = "rancher/rancher2"
+      version = "13.1.4"
+    }
   }
 }
 
@@ -20,3 +24,9 @@ provider "aws" {
   region = var.region
 }
 
+provider "rancher2" {
+  api_url    = var.rancher_api_url
+  access_key = var.rancher_access_key
+  secret_key = var.rancher_secret_key
+  insecure   = var.rancher_insecure
+}

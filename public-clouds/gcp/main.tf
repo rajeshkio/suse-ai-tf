@@ -102,3 +102,40 @@ module "kubernetes" {
   gpu_operator_ns        = var.gpu_operator_ns
   ssh_username           = local.ssh_username
 }
+
+# Integrate RKE2 cluster with existing Rancher Prime Manager
+resource "rancher2_cluster" "rancher_cluster" {
+  name  = var.prefix
+  count = var.rancher_api_url != "" ? 1 : 0
+}
+
+# Use a null_resource to execute the registration command on the target node
+resource "null_resource" "apply_rancher_registration" {
+  count = var.rancher_api_url != "" ? 1 : 0
+
+  # Trigger the resource whenever the registration command changes
+  triggers = {
+    registration_command = rancher2_cluster.rancher_cluster[0].cluster_registration_token[0].insecure_command
+  }
+
+  # Connection block for the target RKE2 node
+  connection {
+    type        = "ssh"
+    user        = local.ssh_username
+    host        = module.infrastructure.instance_public_ip
+    private_key = file(local.private_ssh_key_path)
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "export KUBECONFIG=/tmp/rke2.yaml",
+      "echo 'Applying Rancher registration command...'",
+      # Execute the command provided by Rancher
+      "${rancher2_cluster.rancher_cluster[0].cluster_registration_token[0].insecure_command}"
+    ]
+  }
+
+  # Ensure the null_resource only runs after the cluster token is generated
+  depends_on = [rancher2_cluster.rancher_cluster]
+}
+
